@@ -2,7 +2,7 @@ var config = require('./config').config;
 
 var app = require('http').createServer(handler);
 var io = require('socket.io')(app, {
-    path: config.socketio.path,
+    // path,
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
@@ -22,7 +22,7 @@ function handler(req, res) {
     console.log('request', req.url);
 
     if (req.method === 'OPTIONS') {
-        res.writeHead(204, headers);
+        res.writeHead(204);
         res.end();
         return;
     }
@@ -31,7 +31,7 @@ function handler(req, res) {
         return sendFile(__dirname + '/index.html', res);
     }
 
-    res.writeHead(404, headers);
+    res.writeHead(404);
     res.end('Not found');
 }
 

@@ -1,14 +1,14 @@
 
 const dev = {
-    socketio: {
-        path: '/socket.io',
-    },
+    // socketio: {
+    //     path: '/api/v1/socket.io',
+    // },
 };
 
 const prod = {
-    socketio: {
-        path: '/api/v1/socket.io'
-    },
+    // socketio: {
+    //     path: '/api/v1/socket.io'
+    // },
 };
 
 console.log(`Loading config for env: ${process.env.NODE_ENV}`)
