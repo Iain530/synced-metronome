@@ -7,13 +7,9 @@ import './App.css';
 
 const { timesyncConfig } = config;
 
-// let server = 'https://67ba-2a00-23c5-2d37-b001-a448-5df5-ddc6-3974.ngrok.io';
-// server = 'localhost:8081'
-
-const server = timesyncConfig.host + timesyncConfig.serverPath;
-
+const server = timesyncConfig.host
 var socket = io.connect(server, {
-  path: `${timesyncConfig.serverPath}socket.io/`,
+  path: `${timesyncConfig.serverPath}socket.io`,
 });
 
 const options = {
