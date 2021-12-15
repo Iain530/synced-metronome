@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Timesync server",
+  "main": "index.js",
+  "dependencies": {
+    "socket.io": "^4.4.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Iain530/synced-metronome.git"
+  },
+  "keywords": [
+    "timesync"
+  ],
+  "author": "Iain Cattermole",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Iain530/synced-metronome/issues"
+  },
+  "homepage": "https://github.com/Iain530/synced-metronome#readme"
+}
