@@ -2,7 +2,6 @@ var config = require('./config').config;
 
 var app = require('http').createServer(handler);
 var io = require('socket.io')(app, {
-    // path,
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
@@ -36,6 +35,7 @@ function handler(req, res) {
 }
 
 io.on('connection', function (socket) {
+    console.log('Connection made!')
     socket.on('timesync', function (data) {
         console.log('message', data);
         socket.emit('timesync', {
