@@ -12,7 +12,9 @@ const { timesyncConfig } = config;
 
 const server = timesyncConfig.host + timesyncConfig.serverPath;
 
-var socket = io(server, { path: `${timesyncConfig.serverPath}socket.io` });
+var socket = io.connect(server, {
+  path: `${timesyncConfig.serverPath}socket.io/`,
+});
 
 const options = {
   server: socket,
