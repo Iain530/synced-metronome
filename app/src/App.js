@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
 import { create } from 'timesync';
 import { io } from 'socket.io-client';
+import config from './config';
 
 import './App.css';
 
-let server = 'http://6f15-2a00-23c5-2d37-b001-f4fc-d582-b706-bad2.ngrok.io/timesync' //`http://${window.location.hostname}:8081/timesync`;
+const { timesyncConfig } = config;
 
+// let server = 'https://67ba-2a00-23c5-2d37-b001-a448-5df5-ddc6-3974.ngrok.io';
+// server = 'localhost:8081'
 
-server = 'https://67ba-2a00-23c5-2d37-b001-a448-5df5-ddc6-3974.ngrok.io';
-server = 'localhost:8081'
+const server = timesyncConfig.host + timesyncConfig.serverPath;
 
-var socket1 = io(server);
+var socket = io(server);
 
 const options = {
-  server: socket1,
+  server: socket,
   // timeout: 3000,
   // repeat: 10,
   interval: 60000,
@@ -21,35 +23,29 @@ const options = {
 
 const ts = create(options);
 
-ts.send = function (socket, data, timeout) {
-  //console.log('send', data);
-  return new Promise(function (resolve, reject) {
+ts.send = (socket, data, timeout) => {
+  return new Promise((resolve, reject) => {
     var timeoutFn = setTimeout(reject, timeout);
 
-    socket.emit('timesync', data, function () {
+    socket.emit('timesync', data, () => {
       clearTimeout(timeoutFn);
       resolve();
     });
   });
 };
 
-socket1.on('timesync', function (data) {
+socket.on('timesync', (data) => {
   //console.log('receive', data);
   ts.receive(null, data);
 });
 
-function App() {
+const App = () => {
   const [now, setNow] = useState(Date.now());
   const [offset, setOffset] = useState(0);
   const [synchronizing, setSynchronizing] = useState(true);
   const [syncState, setSyncState] = useState('');
 
   useEffect(() => {
-
-    // syncTime();
-
-    // setInterval(syncTime, 10000);
-
     setInterval(() => {
       setNow(Date.now());
     }, 50);
