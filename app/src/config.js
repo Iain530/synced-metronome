@@ -1,6 +1,4 @@
 
-var isMobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i)
-
 const dev = {
     timesyncConfig: {
         // eslint-disable-next-line no-restricted-globals

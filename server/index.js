@@ -1,5 +1,8 @@
+var config = require('./config').config;
+
 var app = require('http').createServer(handler);
 var io = require('socket.io')(app, {
+    path: config.socketio.path,
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
