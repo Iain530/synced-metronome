@@ -1,7 +1,7 @@
 
 const dev = {
     socketio: {
-        path: '/',
+        path: '/socket.io',
     },
 };
 
@@ -10,5 +10,7 @@ const prod = {
         path: '/api/v1/socket.io'
     },
 };
+
+console.log(`Loading config for env: ${process.env.NODE_ENV}`)
 
 exports.config = process.env.NODE_ENV === 'production' ? prod : dev;
