@@ -4,7 +4,8 @@ import { io } from 'socket.io-client';
 import { useLocation } from 'react-router-dom';
 import config from './config';
 
-import Metronome, { MetronomeSettings, defaultSettings, parseSettingsFromQuery } from './components/Metronome';
+import Metronome, { MetronomeSettings, parseSettingsFromQuery } from './components/Metronome';
+import ShareButton from './components/ShareButton';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -66,23 +67,23 @@ const App = () => {
     });
   }, []);
 
+  const { bpm, timeSignature } = settings;
+
   return (
     <div className="App">
       <header className="App-header">
         <div>
           <Metronome offset={offset} {...settings} />
-          <MetronomeSettings settings={settings} />
           <div className='sync'>
             { synchronizing ? 'Syncing...' : 'Synced ✅'}
           </div>
+          <MetronomeSettings settings={settings} />
+          <ShareButton title={`Synced Metronome at ${bpm} BPM in ${timeSignature[0]}/${timeSignature[1]}`} />
         </div>
 
         <div className='stats'>
           <div>
-            Offset: {offset}ms
-          </div>
-          <div>
-            Server: {server}
+            System clock offset: {Math.round(offset)}ms
           </div>
         </div>
       </header>

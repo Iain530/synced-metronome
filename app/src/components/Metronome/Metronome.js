@@ -12,15 +12,15 @@ const Metronome = ({ offset, timeSignature, bpm }) => {
 
   const [beatsPerMeasure, denominator] = timeSignature;
 
-  const millisPerBeat = 60000 / bpm;
+  const millisPerBeat = 60000 / (bpm * denominator / 4);
   const millisPerBar = millisPerBeat * beatsPerMeasure
 
   const number = Math.ceil((time % millisPerBar) / millisPerBeat);
 
-  return (
-    <p>
+  return  (
+    <div>
       { number }
-    </p>
+    </div>
   );
 };
 

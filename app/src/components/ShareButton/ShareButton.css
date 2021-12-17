@@ -1,0 +1,12 @@
+
+
+.share-button {
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.share-button svg {
+    margin-right: .25rem;
+}
