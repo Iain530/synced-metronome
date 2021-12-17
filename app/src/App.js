@@ -1,25 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { create } from 'timesync';
 import { io } from 'socket.io-client';
+import { useLocation } from 'react-router-dom';
 import config from './config';
 
+import Metronome, { MetronomeSettings, defaultSettings, parseSettingsFromQuery } from './components/Metronome';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 const { timesyncConfig } = config;
 
-const server = timesyncConfig.host
+const server = timesyncConfig.host;
+
 var socket = io.connect(server, {
   path: `${timesyncConfig.serverPath}socket.io`,
 });
 
-const options = {
+const ts = create({
   server: socket,
-  // timeout: 3000,
-  // repeat: 10,
-  interval: 60000,
-}
-
-const ts = create(options);
+  interval: 60000 * 5,
+});
 
 ts.send = (socket, data, timeout) => {
   return new Promise((resolve, reject) => {
@@ -33,21 +34,26 @@ ts.send = (socket, data, timeout) => {
 };
 
 socket.on('timesync', (data) => {
-  //console.log('receive', data);
   ts.receive(null, data);
 });
 
+
+const useQuery = () => {
+  const { search } = useLocation();
+
+  return useMemo(() => new URLSearchParams(search), [search]);
+};
+
+
 const App = () => {
-  const [now, setNow] = useState(Date.now());
   const [offset, setOffset] = useState(0);
   const [synchronizing, setSynchronizing] = useState(true);
   const [syncState, setSyncState] = useState('');
 
-  useEffect(() => {
-    setInterval(() => {
-      setNow(Date.now());
-    }, 50);
+  const query = useQuery();
+  const settings = parseSettingsFromQuery(query);
 
+  useEffect(() => {
     ts.on('change', function (offset) {
       console.log('offset from system time:', offset, 'ms');
       setOffset(offset)
@@ -60,40 +66,25 @@ const App = () => {
     });
   }, []);
 
-  const time = Date.now() + offset
-
-  const bpm = 60;
-  const beatsPerBar = 4;
-
-  const millisPerBeat = 60000 / bpm;
-  const millisPerBar = millisPerBeat * beatsPerBar
-
-  const number = Math.ceil((time % millisPerBar) / millisPerBeat);
-
   return (
     <div className="App">
       <header className="App-header">
         <div>
-          <p>
-            {number}
-          </p>
+          <Metronome offset={offset} {...settings} />
+          <MetronomeSettings settings={settings} />
           <div className='sync'>
-            {/* {(syncState === 'start' && 'Syncing...') || (syncState === 'end' && 'Synced ✅')} */}
-            { synchronizing ? 'Syncing' + '.'.repeat(number) : 'Synced ✅'}
+            { synchronizing ? 'Syncing...' : 'Synced ✅'}
           </div>
         </div>
 
-        <p className='stats'>
+        <div className='stats'>
           <div>
             Offset: {offset}ms
           </div>
           <div>
             Server: {server}
           </div>
-          <div>
-            Time: {time}
-          </div>
-        </p>
+        </div>
       </header>
     </div>
   );
