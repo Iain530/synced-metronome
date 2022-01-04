@@ -4,6 +4,19 @@
     font-size: 2rem;
 }
 
+.letters {
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-around;
+    color: grey;
+    align-items: center;
+}
+
+.letters div:first-of-type {
+    font-size: 3rem;
+    color: white;
+}
+
 .bpm-control {
     margin-top: 1rem;
     display: flex;
