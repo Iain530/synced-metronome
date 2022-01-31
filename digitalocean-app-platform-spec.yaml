@@ -1,0 +1,40 @@
+alerts:
+- rule: DEPLOYMENT_FAILED
+- rule: DOMAIN_FAILED
+name: synced-metronome
+region: lon
+services:
+- alerts:
+  - operator: GREATER_THAN
+    rule: CPU_UTILIZATION
+    value: 80
+    window: FIVE_MINUTES
+  environment_slug: node-js
+  envs:
+  - key: NODE_ENV
+    scope: RUN_AND_BUILD_TIME
+    value: production
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: Iain530/synced-metronome
+  http_port: 8081
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  name: synced-metronome
+  routes:
+  - path: /api/v1
+    preserve_path_prefix: true
+  run_command: npm start
+  source_dir: /server
+static_sites:
+- build_command: npm run build
+  environment_slug: node-js
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: Iain530/synced-metronome
+  name: metronome-client
+  routes:
+  - path: /
+  source_dir: /app
